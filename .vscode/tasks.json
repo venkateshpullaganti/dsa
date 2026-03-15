@@ -1,0 +1,33 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "run python",
+            "type": "shell",
+            "command": "python3 \"${file}\" < input.txt > output.txt",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
+
+
+// **Steps:**
+// 1. Open your project folder in VSCode
+// 2. Create a `.vscode` folder in the project root (if it doesn't exist)
+// 3. Inside it, create `tasks.json` and paste the above
+// 4. Open `demo.py`
+// 5. Press `Cmd+Shift+B` to run
+
+// The output will appear in `output.txt`. Make sure `input.txt` is in the **same folder** as `demo.py`, not inside `.vscode`.
+
+// **Folder structure should look like:**
+// ```
+// your-project/
+// ├── .vscode/
+// │   └── tasks.json
+// ├── demo.py
+// ├── input.txt
+// └── output.txt  ← gets created after running
