@@ -1,18 +1,3 @@
-'''
-    *
-   **
-  ***
- ****
-*****
-'''
-
-# n = 5
-# for j in range(1, n+1,1):
-#         spaces =(n-j) * ' '
-#         stars = j * "*"
-#         print(spaces + stars)
-
-
 
 
 
@@ -76,9 +61,27 @@ def print_pattern5():
 
 # print_pattern6()
 
+n = int(input())
+
+def print_pattern22(n):
+    for i in range(n*2-1):
+        for j in range(n*2-1):
+            top = j
+            left = i
+            right = (2*n-2)-j
+            bottom = (2*n-2)-i
+            d = min(top,bottom,left,right)
+            print(n-d,end=" ")
+        print("")
+
 
 '''
-
-
+3 3 3 3 3 
+3 2 2 2 3
+3 2 1 2 3
+3 2 2 2 3
+3 3 3 3 3
 '''
+
+print_pattern22(n)
 

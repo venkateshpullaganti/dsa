@@ -1,5 +1,12 @@
 
 
 n = int(input())
-nums = list(map(int, input().split()))
-print(sum(nums))
+
+def print_pattern(n):
+    for i in range(n):
+        for j in range(i):
+            print("*",end=" ")
+        print()
+
+
+print_pattern(n)
