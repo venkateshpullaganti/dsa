@@ -112,7 +112,14 @@ def is_palindrome(s):
 
 
 
+# multiple recursion calls
+# fib series: 0 1 1 2 3 5 8 13 21 34
+def get_nth_fib_number(n):
+    if n <= 1:
+        return 0
+    if n == 2:
+        return 1
+    return get_nth_fib_number(n-1) + get_nth_fib_number(n-2)
 
-
-n = str(input())
-print(is_palindrome(n))
+n = int(input())
+print(get_nth_fib_number(n))
