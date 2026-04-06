@@ -40,7 +40,7 @@
 
 ---
 
-# Insertion Sort: Comprehensive Notes
+# 3.Insertion Sort
 
 Insertion sort is an intuitive sorting algorithm that builds a sorted array one element at a time. It is particularly efficient for small data sets or arrays that are already partially sorted.
 
@@ -93,3 +93,77 @@ void insertion_sort(int arr[], int n) {
         }
     }
 }
+```
+
+# 4.Merge Sort
+
+Merge Sort is a highly efficient, stable, and comparison-based sorting algorithm. It follows the **Divide and Conquer** paradigm to sort an array [00:03:03].
+
+
+## 1. Core Concept: Divide and Conquer
+The algorithm works by repeatedly breaking down the array into smaller subarrays until each subarray consists of a single element (which is inherently sorted), and then merging those subarrays back together in a sorted manner.
+
+* **Divide:** Find the middle index and split the array into two halves [00:04:03].
+* **Conquer:** Recursively call merge sort on both halves until the base case is reached (array size $\leq 1$) [00:20:57].
+* **Merge:** Combine the two sorted halves into one single sorted array [00:22:39].
+
+## 2. Dry Run Example
+**Array:** `[3, 2, 4, 1, 3]`
+
+1.  **Divide:** Split into `[3, 2, 4]` and `[1, 3]`.
+2.  **Divide Further:** `[3, 2, 4]` splits into `[3, 2]` and `[4]`. `[3, 2]` splits into `[3]` and `[2]`.
+3.  **Merge (Smallest Units):** * Merge `[3]` and `[2]` $\rightarrow$ `[2, 3]`.
+    * Merge `[2, 3]` and `[4]` $\rightarrow$ `[2, 3, 4]`.
+4.  **Right Side:** `[1, 3]` splits into `[1]` and `[3]`, then merges back to `[1, 3]`.
+5.  **Final Merge:** Merge `[2, 3, 4]` and `[1, 3]` $\rightarrow$ `[1, 2, 3, 3, 4]` [00:31:49].
+
+## 3. Python Implementation
+This implementation uses recursive calls for the division and a helper function for the merging logic [00:40:44].
+
+```python
+def merge_sort(arr, low, high):
+    # Base Case: If the array has only one element
+    if low >= high:
+        return
+    
+    mid = (low + high) // 2
+    
+    # Recursively sort the left and right halves
+    merge_sort(arr, low, mid)
+    merge_sort(arr, mid + 1, high)
+    
+    # Merge the sorted halves
+    merge(arr, low, mid, high)
+
+def merge(arr, low, mid, high):
+    temp = []
+    left = low
+    right = mid + 1
+    
+    # Compare elements from both halves and add the smaller one to temp
+    while left <= mid and right <= high:
+        if arr[left] <= arr[right]:
+            temp.append(arr[left])
+            left += 1
+        else:
+            temp.append(arr[right])
+            right += 1
+            
+    # Copy remaining elements from the left half, if any
+    while left <= mid:
+        temp.append(arr[left])
+        left += 1
+        
+    # Copy remaining elements from the right half, if any
+    while right <= high:
+        temp.append(arr[right])
+        right += 1
+        
+    # Transfer sorted elements from temp back to the original array
+    for i in range(low, high + 1):
+        arr[i] = temp[i - low]
+
+# Usage
+nums = [3, 2, 4, 1, 3]
+merge_sort(nums, 0, len(nums) - 1)
+print(f"Sorted array: {nums}")

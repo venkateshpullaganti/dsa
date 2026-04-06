@@ -1,3 +1,4 @@
+import math
 def get_min(arr):
     min = arr[0]
     i = 0
@@ -52,7 +53,7 @@ def bubble_sort_optimized(arr):
 
 
 # Time complexity : O(~n^2)
-# worest and avg case : O(~n^2)
+# worst and avg case : O(~n^2)
 # best case : O(n) no swap if already sorted.
 def insertion_sort(arr):
     for i in range(len(arr)):
@@ -64,6 +65,49 @@ def insertion_sort(arr):
 
 
 
+
+def merge(arr, low, mid, high):
+    temp = []
+    left = low
+    right = mid+1
+
+    while left <= mid and right <= high:
+        if arr[left] <= arr[right]:
+            temp.append(arr[left])
+            left = left + 1
+        else:
+            temp.append(arr[right])
+            right = right+1
+    
+    while left <= mid:
+        temp.append(arr[left])
+        left = left+1
+    
+    while right <= high:
+        temp.append(arr[right])
+        right = right + 1
+    
+    i = low
+    while i <= high:
+        arr[i] = temp[i - low]
+        print(f"swap {i-low}")
+        i = i+1
+
+
+# Time complexity: O(nlogn) (best, avg, worst cases)
+# Space complexity: O(n)
+def merge_sort(arr, low, high):
+    if low >= high:
+        return arr
+    
+    mid = (low+high)//2
+
+    merge_sort(arr, low, mid)
+    merge_sort(arr, mid+1, high)
+    merge(arr, low, mid, high)
+    print(arr)
+    return arr
+
 n = [int(i) for i in input().split(" ")]
 
-print(insertion_sort(n))
+print(merge_sort(n,0,len(n)-1))
