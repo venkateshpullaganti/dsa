@@ -108,6 +108,35 @@ def merge_sort(arr, low, high):
     print(arr)
     return arr
 
+
+
+def rec_bubble_sort(arr, current = 0):
+    if current >= len(arr)-1:
+        return arr
+    left = 0
+    right = 1
+    while right < len(arr)-current:
+        if arr[left] > arr[right]:
+            arr[left], arr[right] = arr[right], arr[left]
+        left = left+1
+        right = right + 1
+    return rec_bubble_sort(arr, current+1)
+
+
+
+def rec_insertion_sort(arr, current = 0):
+    if current >= len(arr)-1:
+        return arr
+    i = current
+    min_index = i
+    while i <= len(arr)-1:
+        if arr[i] < arr[min_index]:
+            min_index = i
+        i = i+1
+    arr[current], arr[min_index] = arr[min_index], arr[current]
+    return rec_insertion_sort(arr, current+1)
+
 n = [int(i) for i in input().split(" ")]
 
-print(merge_sort(n,0,len(n)-1))
+print(rec_insertion_sort(n))
+
