@@ -95,7 +95,7 @@ void insertion_sort(int arr[], int n) {
 }
 ```
 
-# 4.Merge Sort
+# 4. Merge Sort
 
 Merge Sort is a highly efficient, stable, and comparison-based sorting algorithm. It follows the **Divide and Conquer** paradigm to sort an array [00:03:03].
 
@@ -166,4 +166,75 @@ def merge(arr, low, mid, high):
 # Usage
 nums = [3, 2, 4, 1, 3]
 merge_sort(nums, 0, len(nums) - 1)
+print(f"Sorted array: {nums}")
+```
+
+
+# 5. Quick Sort
+
+Quick Sort is an advanced sorting algorithm that follows the **Divide and Conquer** paradigm. It is generally faster than Merge Sort in practice because it sorts the array in place without requiring an extra temporary array for merging [00:02:34].
+
+
+## 1. How it Works (The Logic)
+The core idea behind Quick Sort is to pick an element (called the **pivot**) and place it exactly where it belongs in the final sorted array. Once the pivot is in place, everything to its left is smaller, and everything to its right is larger [00:06:47].
+
+* **Step 1: Pick a Pivot:** The pivot can be any element (first, last, middle, or random). We will use the **first element** as the pivot [00:04:13].
+* **Step 2: Place the Pivot:** Find the correct index for the pivot such that all smaller elements are strictly on its left, and all larger elements are on its right [00:08:03].
+* **Step 3: Recursion:** The pivot is now fixed. Recursively apply Step 1 and Step 2 to the left unsorted sub-array and the right unsorted sub-array [00:09:34].
+
+## 2. The Partition Algorithm (Placing the Pivot)
+How do we actually place the pivot in its correct position? We use two pointers: `i` and `j` [00:14:22].
+
+1.  Set the pivot as the first element (`arr[low]`).
+2.  Set pointer `i` at the `low` index (moving left to right).
+3.  Set pointer `j` at the `high` index (moving right to left).
+4.  **Move `i` forward** until you find an element *greater* than the pivot [00:14:46].
+5.  **Move `j` backward** until you find an element *smaller* or equal to the pivot [00:15:18].
+6.  If `i` is still less than `j`, **swap** `arr[i]` and `arr[j]` [00:15:37].
+7.  Repeat steps 4-6 until `i` crosses `j` (`i > j`).
+8.  Once `i` and `j` cross, the correct place for the pivot is found at index `j`. Swap the pivot (`arr[low]`) with `arr[j]` [00:17:53].
+
+## 3. Python Implementation
+
+
+```python
+def quick_sort(arr, low, high):
+    # Base Case: more than 1 element to sort
+    if low < high:
+        # Get the partition index where the pivot is placed
+        p_index = partition(arr, low, high)
+        
+        # Recursively sort the left and right halves
+        quick_sort(arr, low, p_index - 1)
+        quick_sort(arr, p_index + 1, high)
+
+def partition(arr, low, high):
+    pivot = arr[low]
+    i = low
+    j = high
+    
+    while i < j:
+        # Find first element greater than pivot from the left
+        # (Bound condition: i <= high to avoid index out of bounds)
+        while i <= high and arr[i] <= pivot:
+            i += 1
+            
+        # Find first element smaller than pivot from the right
+        # (Bound condition: j >= low to avoid index out of bounds)
+        while j >= low and arr[j] > pivot:
+            j -= 1
+            
+        # If pointers haven't crossed, swap elements to correct sides
+        if i < j:
+            arr[i], arr[j] = arr[j], arr[i]
+            
+    # Pointers have crossed; swap pivot to its correct position (j)
+    arr[low], arr[j] = arr[j], arr[low]
+    
+    # Return the correct position of the pivot
+    return j
+
+# Usage
+nums = [4, 6, 2, 5, 7, 9, 1, 3]
+quick_sort(nums, 0, len(nums) - 1)
 print(f"Sorted array: {nums}")

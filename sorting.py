@@ -27,7 +27,6 @@ def bubble_sort(arr):
         while right < len(arr)-i:
             if arr[left] > arr[right]:
                 arr[left], arr[right] = arr[right],arr[left]
-            print(left, right)
             left = left + 1
             right = right + 1
     print(arr)
@@ -136,7 +135,41 @@ def rec_insertion_sort(arr, current = 0):
     arr[current], arr[min_index] = arr[min_index], arr[current]
     return rec_insertion_sort(arr, current+1)
 
+
+
+def partition(arr, low, high):
+    pivot = arr[low]
+
+    i = low
+    j = high
+    
+    while i < j:
+        while i <= high-1 and arr[i] <= pivot:
+            i += 1
+
+        while j >= low and arr[j] > pivot:
+            j -= 1
+        
+        if i < j:
+            arr[i],arr[j] = arr[j], arr[i]
+
+    arr[low], arr[j] = arr[j], pivot
+    return j
+ 
+
+def quick_sort(arr, low, high):
+    if low > high:
+        return arr
+    
+    p_index = partition(arr, low, high)
+    quick_sort(arr, low, p_index - 1)
+    quick_sort(arr,  p_index + 1, high)
+
+    return arr
+
+
+
 n = [int(i) for i in input().split(" ")]
 
-print(rec_insertion_sort(n))
+print(quick_sort([], 0, len([])-1))
 
