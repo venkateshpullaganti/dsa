@@ -29,6 +29,7 @@ def remove_dups(nums):
         i+=1
     return nums
 
+# keep on comparing with nums[i] and if greater then place it at i+1 and incrent i 
 def remove_dups_optimized(nums):
     i = 0
     j = 1
@@ -153,8 +154,68 @@ def move_0s_to_end_optimal(nums):
 
 
 
+
+def find_missing_number_brute(nums, n):
+    """
+        From 1 to n, Search the array every time and if not found
+        return that number
+     """
+    for i in range(1,n+1):
+        exists = False
+        for j in nums:
+            if j == i:
+                exists = True
+        if not exists:
+            return i    
+
+
+def find_missing_number_better(nums):
+    """
+    Create a hash map and mark the numbers, at end return that number
+    that is not repeated.
+    """
+    hash_nums = [0 for i in range(0,len(nums)+1)]
+
+    for num in nums:
+        hash_nums[num] = 1
+    
+    for i in range(len(hash_nums)):
+        if hash_nums[i] == 0:
+            return i
+        
+
+def find_missing_number_optimal_1(nums):
+    """
+    Find the sum of n natural nums and sum the nums in arr
+    subtract you will get the missing num
+    
+    """
+    nums_len = len(nums)+1
+    s = (nums_len * (nums_len-1))//2
+
+    for n in nums:
+        s = s - n
+    return s
+
+def find_missing_number_optimal_2(nums):
+    """
+    Compute the xor for array
+    
+    """
+    xor1= 0
+    xor2 = 0
+    for i in range(len(nums)):
+        print(i)
+        xor1 ^= i + 1
+        xor2 ^= nums[i]
+
+    return xor1^xor2
+
+
 # k = int(input())
 nums = [int(n) for n in input().split()]
-print(move_0s_to_end_optimal(nums))
+n = int(input())
+
+print(find_missing_number_optimal_2(nums))
 
 
