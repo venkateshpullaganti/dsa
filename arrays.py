@@ -152,9 +152,6 @@ def move_0s_to_end_optimal(nums):
             j += 1
     return nums
 
-
-
-
 def find_missing_number_brute(nums, n):
     """
         From 1 to n, Search the array every time and if not found
@@ -212,10 +209,39 @@ def find_missing_number_optimal_2(nums):
     return xor1^xor2
 
 
+
+def union_of_2_sorted_arrays(nums1, nums2):
+    uset = set()
+    union = []
+
+    for n in nums1:
+        uset.add(n)        
+
+    for n in nums2:
+        uset.add(n)
+
+    for n in sorted(uset):
+        union.append(n)
+    return union
+
+
+def union_of_2_sorted_arrays_optimal(nums1, nums2):
+    union = []
+    i = 0
+    j = 0
+    while i < len(nums1) and j < len(nums2):
+        if nums1[i] < nums2[j]:
+            union.append(nums1[i])
+            i+=1
+        elif nums1[i] >  nums2[j]:
+            union.append(nums2[j])
+            j += 1
+
+
 # k = int(input())
 nums = [int(n) for n in input().split()]
-n = int(input())
+nums2 = [int(n) for n in input().split()]
 
-print(find_missing_number_optimal_2(nums))
+print(union_of_2_sorted_arrays(nums,nums2))
 
 
