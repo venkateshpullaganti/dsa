@@ -226,22 +226,42 @@ def union_of_2_sorted_arrays(nums1, nums2):
 
 
 def union_of_2_sorted_arrays_optimal(nums1, nums2):
+    """
+    Two pointer approach
+
+    Time Complexity: O(M+N), because both the arrays must be traversed once.
+    Space Complexity: O(M+N), considering the space for returning the output, which in the worst case, can contain all the elements from both arrays.
+    """
     union = []
     i = 0
     j = 0
     while i < len(nums1) and j < len(nums2):
-        if nums1[i] < nums2[j]:
-            union.append(nums1[i])
-            i+=1
-        elif nums1[i] >  nums2[j]:
-            union.append(nums2[j])
+        if nums1[i] > nums2[j]:
+            s = nums2[j]
             j += 1
+        else:
+            i += 1
+        if not union or s > union[-1]:
+            union.append(s)
+    
+    while i < len(nums1):
+        if union[-1] < nums1[i]:
+            union.append(nums1[i])
+        i+=1
+
+    while j < len(nums2):
+        if union[-1] < nums2[j]:
+            union.append(nums2[j])
+        j += 1
+    
+    return union
+
 
 
 # k = int(input())
 nums = [int(n) for n in input().split()]
 nums2 = [int(n) for n in input().split()]
 
-print(union_of_2_sorted_arrays(nums,nums2))
+print(union_of_2_sorted_arrays_optimal(nums,nums2))
 
 
