@@ -211,6 +211,12 @@ def find_missing_number_optimal_2(nums):
 
 
 def union_of_2_sorted_arrays(nums1, nums2):
+    """
+    Time Complexity: O( (M+N)log(M+N) ), at max set can store M+N elements {when there are no common elements and elements in nums1 , nums2 are distntict}. So Inserting M+N th element takes log(M+N) time. Upon approximation across inserting all elements in worst, it would take O((M+N)log(M+N) time.
+
+    Space Complexity: O(M+N), considering space of Union Array.
+    
+    """
     uset = set()
     union = []
 
@@ -257,11 +263,136 @@ def union_of_2_sorted_arrays_optimal(nums1, nums2):
     return union
 
 
+def intersection_of_two_sorted_array(nums1, nums2):
+    """
+    initiate two separate arrays : intersection_arr & visited_arr for nums2.
+    Iterate over nums1 and if num matched with nums2[i] and is not yet taken then add to intersection arr.
+    Return intersection arr.
+
+    Edge Cases: 
+        - Extra copies in 1 arr and not in other
+
+    Time complexity: O(n) * O(m) = O(n*m) ~ O(n^2)
+    Space complexity: O(2m) (intersection_arr + visited_arr)    
+    """
+    intersection_nums = []
+    visited_nums = [0 for i in range(len(nums2))]
+
+    for num in nums1:
+        i = 0
+        while i < len(nums2):
+            if nums2[i] == num and visited_nums[i] == 0:
+                intersection_nums.append(nums2[i])
+                visited_nums[i] = 1
+                break          # Once matched with any number we don't need to continue. 
+            elif nums2[i] > num:
+                break         # We exceeded the num in the sorted nums2 array, so all other will always be greater
+            i += 1
+
+    return intersection_nums 
+
+
+def intersection_of_two_sorted_arrays_optimal(nums1,nums2):
+    """
+    Two pointer approach: 
+    Two pointer i and j will move on respective arrays, if any number nums1[i] == nums2[j] append it to the intersection and increment both pointers
+    else increment the lesser number index and continue.
+
+    Time complexity: O(n+m)
+    Space complexity: O(min(m,n))
+    """
+    intersection_arr = []
+    i = 0
+    j = 0
+    while i < len(nums1) and j<len(nums2):
+        if nums1[i] == nums2[j]:
+            intersection_arr.append(nums1[i])
+            i += 1
+            j += 1
+        elif nums2[j] > nums1[i]:
+            i += 1
+        else:
+            j += 1
+    return intersection_arr
+
+
+### Majority Element
+
+def majority_ele_brute(nums):
+    """
+    Majority element : Element that appears greater than len(nums)/2 
+
+    Iterate over each element and find the elements counts and return if count is > n/2
+
+    Time complexity = O(n^2)
+    Space Complexity = O(1)
+
+    """
+    
+    for num in nums:
+        count = 0
+        for num2 in nums:
+            if num == num2:
+                count+= 1
+        
+        if count > len(nums)/2:
+            return num
+    return -1
+        
+def majority_ele_better(nums):
+    """
+    Using Hashing, keeping the count of the num iterated over.
+
+    Time complexity: O(n)
+    Space complexity: O(n)
+    """
+    hash_n = dict()
+    for num in nums:
+        if hash_n.get(num):
+            hash_n[num] = hash_n[num] + 1
+        else:
+            hash_n[num] = 1
+    for k,v in hash_n.items():
+        if v > len(nums)/2:
+            return k
+    return -1
+
+def majority_ele_optimal_moors_voting_algo(nums):
+    """
+    Moor's Voting Algorithm:
+        Consider any element as the majority element and iterate through the arr.
+        If current num == ele then increase the count else decrease, if counter resets to 0, then take the fresh element and start.
+
+    Time complexity: O(n) + O(n)
+    Space complexity: O(1)
+    """
+
+    ele = 0
+    count = 0
+
+    for num in nums:
+        if count == 0:
+            ele = num
+            count += 1
+        elif ele == num:
+            count+=1
+        else:
+            count-=1
+    
+    count2 = 0
+    for num in nums:
+        if num == ele:
+            count2+=1
+    if count2 > len(nums)/2: # only verify if they say arr might not contain majority ele 
+        return ele
+
+    return -1
+
 
 # k = int(input())
 nums = [int(n) for n in input().split()]
-nums2 = [int(n) for n in input().split()]
+# nums2 = [int(n) for n in input().split()]
 
-print(union_of_2_sorted_arrays_optimal(nums,nums2))
+print(majority_ele_optimal_moors_voting_algo(nums))
 
 
