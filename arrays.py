@@ -389,10 +389,136 @@ def majority_ele_optimal_moors_voting_algo(nums):
     return -1
 
 
-# k = int(input())
-nums = [int(n) for n in input().split()]
-# nums2 = [int(n) for n in input().split()]
 
-print(majority_ele_optimal_moors_voting_algo(nums))
+# Leaders in the array
+
+def leaders_in_arr_brute(nums):
+    """
+    Iterate over each element and compare with next elements. 
+    
+    Time complexity: O(n^2)
+    Space complexity: O(1) # not used any space to solve the problem but used to store it. If you consider it will be O(n)
+    """
+
+    leaders = []
+    for i in range(len(nums)):
+        j = i + 1
+        is_leader = True
+        while j < len(nums):
+            if nums[j] >= nums[i]:
+                is_leader = False
+                break
+            j+=1
+        if is_leader:
+            leaders.append(nums[i])
+    
+    return leaders
+
+def leaders_in_arr_optimal(nums):
+    """
+    Traverse the array from right and save the largest ele and keep on comparing with previous
+    and if the current is larger than largest ele then it is one of the leader.
+
+    Time complexity: O(n) or O(N logN) if asked to return the sorted.
+    Space complexity: O(n) just 
+    
+    """
+    largest = nums[len(nums)-1]
+    leaders = [largest]
+    
+    for i in range(len(nums)-1,-1, -1):
+        if nums[i] > largest:
+            leaders.append(nums[i])
+            largest = nums[i]
+
+    leaders.reverse()
+    return leaders
+
+
+def rearrange_ele_by_sign_brute(nums):
+    """
+        Time complexity: O(n) + O(n/2)
+        Space complexity: O(n)
+    """
+    pos = []
+    neg = []
+
+    for num in nums:
+        if num > 0:
+            pos.append(num)
+        else:
+            neg.append(num)
+    
+    for i in range(len(nums)//2):
+        nums[2*i] = pos[i]
+        nums[2*i+1] = neg[i]
+    
+    return nums
+
+def rearrange_ele_by_sign_optimal(nums):
+    """
+    Time complexity = O(n)
+    Space complexity = O(n)
+    
+    """
+    arranged = [0 for i in range(len(nums))]
+
+    pos_index = 0
+    neg_index = 1
+
+    for num in nums:
+        if num > 0:
+            arranged[pos_index] = num
+            pos_index += 2
+        else:
+            arranged[neg_index] = num
+            neg_index += 2
+    return arranged
+
+
+def print_spiral_matrix(matrix):
+    n = len(matrix)
+    m = len(matrix[0])
+
+    left = 0
+    right = m-1
+    top = 0
+    bottom = n-1
+
+    spiral = []
+
+    while top <= bottom and left <= right:
+        # right
+        for i in range(left, right+1):
+            spiral.append(matrix[top][i])
+        
+        top+=1
+
+        # bottom
+        for i in range(top, bottom+1):
+            spiral.append(matrix[i][right])
+        
+        right-=1
+
+        if top <= bottom:
+             # left
+            for i in range(right, left-1, -1):
+                spiral.append(matrix[bottom][i])
+            bottom -=1
+
+        if left <= right:
+            # top
+            for i in range(bottom, top-1, -1):
+                spiral.append(matrix[i][left])
+            left+=1
+
+    return spiral
+
+
+# k = int(input())
+# nums = [int(n) for n in input().split()]
+# nums2 = [int(n) for n in input().split()]
+nums2 =  [[1, 2, 3,4,5,6], [20, 21,22,23, 24,7], [19, 32, 33,34,25,8], [18,31,36,35,26,9], [17,30,29,28,27,10],[16,15,14,13,12,11]]
+print(print_spiral_matrix([[1, 2, 3], [4 ,5 ,6], [7, 8, 9]]))
 
 
