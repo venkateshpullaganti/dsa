@@ -515,10 +515,58 @@ def print_spiral_matrix(matrix):
     return spiral
 
 
-# k = int(input())
+
+
+# Pascals Triangle
+
+"""
+Pascals Triangle: 
+
+
+"""
+
+
+def calc_number_at_position_pascals_triangle(n,r):
+    """
+    Use nCr formula : n!/r!*(n-r)!
+
+    if we solve above eq it comes down to 
+    """
+    res = 1
+
+    for i in range(r):
+        res = res * (n-i)
+        res = res // (i+1)
+    return res
+
+
+def print_rth_row_pascal_triangle(r):
+    """
+    Time complexity : O(n)
+    
+    """
+    ans = [0] * r
+    ans[0] = 1
+    for i in range(1,r):
+        ans[i] = (ans[i-1] * (r-i)) // i
+    return ans
+
+
+def return_pascal_triangle(r):
+    ans = []
+    for i in range(1,r+1):
+        temp = [0] * i
+        temp[0] = 1
+        for j in range(1,i):
+            temp[j] = (temp[j-1] * (i-j)) // j
+        ans.append(temp)
+    return ans
+ 
+
+r = int(input())
+c = int(input())
 # nums = [int(n) for n in input().split()]
-# nums2 = [int(n) for n in input().split()]
-nums2 =  [[1, 2, 3,4,5,6], [20, 21,22,23, 24,7], [19, 32, 33,34,25,8], [18,31,36,35,26,9], [17,30,29,28,27,10],[16,15,14,13,12,11]]
-print(print_spiral_matrix([[1, 2, 3], [4 ,5 ,6], [7, 8, 9]]))
+
+print(return_pascal_triangle(r))
 
 
