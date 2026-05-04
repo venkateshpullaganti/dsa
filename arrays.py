@@ -561,12 +561,61 @@ def return_pascal_triangle(r):
             temp[j] = (temp[j-1] * (i-j)) // j
         ans.append(temp)
     return ans
- 
+
+def rotate_matrix_by_90(arr):
+    """
+    Time complexity : O(n^2)
+    Space complexity : O(n^2)
+    """
+    n = len(arr)
+    m = len(arr[0])
+
+    temp =[ [0] * n for i in range(n)]
+
+    for i in range(n):
+        for j in range(m):
+          temp[j][(n-1)-i] = arr[i][j]
+
+    return temp
+
+
+def rotate_matrix_optimal(arr):
+    """
+    Transpose and reverse. 
+    Transpose: Reverse the elements except the diagonal ones
+
+    Time complexity: O(2n^2)
+    Space complexity: O(1)
+    """
+
+    n = len(arr)
+    m = len(arr[0])
+
+    # Transpose the matrix
+    for i in range(n):
+        for j in range(i):
+            arr[i][j], arr[j][i] =  arr[j][i], arr[i][j]
+
+
+    # Reverse elements in each row
+    for i in range(n):
+        j = 0
+        k = m-1
+        while j < k:
+            arr[i][j],arr[i][k] = arr[i][k], arr[i][j]
+            j+=1 
+            k-=1
+    
+    for i in range(n):
+        print(arr[i])
 
 r = int(input())
 c = int(input())
+
 # nums = [int(n) for n in input().split()]
 
-print(return_pascal_triangle(r))
+n = [[1,2,3], [4,5,6], [7,8,9]]
+
+print(rotate_matrix_optimal(n))
 
 
