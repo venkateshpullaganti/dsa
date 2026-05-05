@@ -609,13 +609,78 @@ def rotate_matrix_optimal(arr):
     for i in range(n):
         print(arr[i])
 
-r = int(input())
-c = int(input())
 
-# nums = [int(n) for n in input().split()]
+def two_sum_brute(nums,target):
+    """
+    Time Complexity: O(N^2)
+    Space Complexity: O(1)
+    """
+    arr_len = len(nums)
 
-n = [[1,2,3], [4,5,6], [7,8,9]]
+    for i in range(arr_len):
+        for j in range(i+1, arr_len):
+            if nums[i] + nums[j] == target:
+                return [i,j]
+    return -1
 
-print(rotate_matrix_optimal(n))
+def two_sum_better_hashing(nums,target):
+    """
+    
+    Time Complexity: O(N logN) or O(N^2) [Worest case if all the elements are colliding in hash]
+    Space Complexity: O(N)
+    """
+    h_arr = dict()
+
+    for i in range(len(nums)):
+        diff = target - nums[i]
+        print(h_arr)
+        if diff in h_arr:
+            return [h_arr.get(diff), i]
+        else:
+            h_arr[nums[i]] = i
+    
+    return -1
+
+
+def two_sum_slightly_optimal(nums, target):
+    """
+    Optimal just to return whether the two sum exists or not. To return the indexes, we need to 
+    use some other data struct to store the indexes.
+
+    First sort the arr and use two pointer approach to search for the elements.
+
+   Time Complexity: O(N) + O(N*logN), where N is size of the array. As the loop will run at most N times & sorting the array will take N * logN time complexity
+   Space Complexity: O(N), because of the external data structure created to store the array elements along with their indices
+    """
+    nums = [[nums[i],i] for i in range(len(nums))]
+
+    nums.sort(key=lambda x:x[0])
+
+    i = 0
+    j = len(nums)-1
+
+    while i < j:
+        sum = nums[i][0] + nums[j][0]
+        if sum == target:
+            return [nums[i][1] , nums[j][1]]
+        elif sum > target:
+            j -= 1
+        else:
+            i+=1 
+    return -1
+
+
+
+# r = int(input())
+# c = int(input())
+
+k = int(input())
+
+nums = [int(n) for n in input().split()]
+
+
+# n = [[1,2,3], [4,5,6], [7,8,9]]
+
+print(two_sum_slightly_optimal(nums,k))
 
 
