@@ -671,16 +671,107 @@ def two_sum_slightly_optimal(nums, target):
 
 
 
+def three_sum_brute(nums):
+    """
+    Time Complexity: O(N2 x log(no. of unique triplets)), where N is size of the array.
+    Inserting triplets into the set takes O(log(no. of unique triplets)) time complexity. However, we are not considering the time complexity of sorting, as we are only sorting 3 elements each time.
+    Note: For Java (HashSet), insertion operation takes O(1) time. Thus, the overall time complexity for Java code will be O(N2)
+
+    Space Complexity: O(2 x no. of the unique triplets) + O(N) for using a set data structure and a list to store the triplets and extra O(N) for storing the array elements in another set.
+    """
+    tl = dict()
+
+    num_len = len(nums)
+
+    for i  in range(num_len):
+        for j in range(i+1, num_len):
+            for k in range(j+1,num_len):
+                if nums[i] + nums[j] + nums[k] == 0:
+                    triplets = [nums[i] , nums[j] , nums[k]]
+                    triplets.sort()
+                    tl[tuple(triplets)] = True
+
+    ans =  [k for k in tl.keys()]
+    return ans
+
+
+def three_sum_better(nums):
+    """
+    Time Complexity: O(N2 x log(no. of unique triplets)), where N is size of the array.
+    Inserting triplets into the set takes O(log(no. of unique triplets)) time complexity. However, we are not considering the time complexity of sorting, as we are only sorting 3 elements each time.
+    Note: For Java (HashSet), insertion operation takes O(1) time. Thus, the overall time complexity for Java code will be O(N2)
+
+    Space Complexity: O(2 x no. of the unique triplets) + O(N) for using a set data structure and a list to store the triplets and extra O(N) for storing the array elements in another dict.
+    """
+    num_len = len(nums)
+
+    if num_len < 3:
+        return []
+    
+    tl_set = set()
+
+    for i in range(num_len):
+        hash_arr = dict()
+        for j in range(i+1, num_len):
+            diff = -(nums[i] + nums[j])
+            if hash_arr.get(diff):
+                print(i,j, hash_arr)
+                triplets = [nums[i] , nums[j], diff]
+                print(f'-> {triplets}')
+                triplets.sort()
+                tl_set.add(tuple(triplets))
+            
+            hash_arr[nums[j]] = True
+
+    ans = [list(t) for t in tl_set]
+
+    return ans
+
+def three_sum_optimal_2pointer(nums):
+    num_len = len(nums)
+    tls = []
+
+    if num_len < 3:
+        return []
+    
+    nums.sort()
+    
+    for i in range(num_len):
+        if i > 0 and nums[i-1] == nums[i]:
+            continue
+
+        j = i+1
+        k = num_len-1
+        while j < k:
+
+            summ = nums[i] + nums[j]+ nums[k]
+            if summ == 0:
+                tls.append([nums[i] , nums[j], nums[k]])
+                j+=1
+                k-=1
+
+                while j < k and nums[j] == nums[j-1]:
+                    j+=1
+                while j < k and nums[k] == nums[k+1]:
+                    k-=1
+            elif summ < 0:
+                j+=1
+            else:
+                k-=1
+
+    return tls
+
 # r = int(input())
 # c = int(input())
 
-k = int(input())
+# k = int(input())()
 
 nums = [int(n) for n in input().split()]
 
 
+
 # n = [[1,2,3], [4,5,6], [7,8,9]]
 
-print(two_sum_slightly_optimal(nums,k))
+print(three_sum_optimal_2pointer(nums))
 
 
