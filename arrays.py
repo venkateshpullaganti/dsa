@@ -715,9 +715,7 @@ def three_sum_better(nums):
         for j in range(i+1, num_len):
             diff = -(nums[i] + nums[j])
             if hash_arr.get(diff):
-                print(i,j, hash_arr)
                 triplets = [nums[i] , nums[j], diff]
-                print(f'-> {triplets}')
                 triplets.sort()
                 tl_set.add(tuple(triplets))
             
@@ -728,6 +726,12 @@ def three_sum_better(nums):
     return ans
 
 def three_sum_optimal_2pointer(nums):
+    """
+    Time Complexity: O(N3), where N is the size of the given array.
+    Sorting the array takes O(NlogN) time, and the 3 nested loops take O(N3) time. Thus, the overall time complexity is O(N3) + O(NlogN), which boils down to O(N3).
+
+    Space Complexity: O(no. of quadruplets), this space is only used to store the answer. No extra space is used to solve this problem. So, from that perspective, space complexity can be written as O(1).
+    """
     num_len = len(nums)
     tls = []
 
@@ -761,17 +765,100 @@ def three_sum_optimal_2pointer(nums):
 
     return tls
 
+
+def four_sum_brute(nums,target):
+    """
+    Time complexity : O(N4)
+    Space complexity : O(No. of quads)
+
+    """
+    num_len = len(nums)
+    if num_len < 4: 
+        return []
+
+    quads = set()
+
+    for i in range(num_len):
+        for j in range(i+1, num_len):
+            for k in range(j+1, num_len):
+                for l in range(k+1, num_len):
+                    if nums[i] + nums[j] + nums[k] + nums[l] == target:
+                        temp = [nums[i], nums[j], nums[k], nums[l]]
+                        temp.sort()
+                        quads.add(tuple(temp))
+
+    return list(quads)
+
+
+def four_sum_better(nums, target):
+    num_len = len(nums)
+    if num_len < 4: 
+        return []
+
+    quads = set()
+
+    for i in range(num_len):
+        for j in range(i+1, num_len):
+            hash_nums = dict()
+            for k in range(j+1, num_len):
+                diff = target - (nums[i] + nums[j] + nums[k])
+                if hash_nums.get(diff):
+                    temp = [nums[i], nums[j], nums[k], diff]
+                    temp.sort()
+                    quads.add(tuple(temp))
+                hash_nums[nums[k]] = True
+
+    quads_list = [list(q) for q in quads]
+    return quads_list
+
+
+def four_sum_optimal_2pointer(nums, target):
+    num_len = len(nums)
+    if num_len < 4: 
+        return []
+    
+    nums.sort()
+    quads = []
+    for i in range(num_len):
+        if i > 0 and nums[i] == nums[i-1]:
+            continue
+
+        for j in range(i+1, num_len):
+
+            if j > i+1 and nums[j] == nums[j-1]:
+                continue
+
+            l = j + 1
+            m = num_len - 1
+            while l < m:
+                summ = nums[i]+  nums[j]+ nums[l] + nums[m]
+                if summ == target:
+                    quads.append([nums[i], nums[j],nums[l],nums[m]])
+                    l+=1
+                    m-=1
+                    
+                    while l < m and nums[l] == nums[l-1]:
+                        l+=1
+                    while l < m and nums[m] == nums[m+1]:
+                        m-=1
+                elif summ > target:
+                    m-=1
+                else:
+                    l+=1
+
+    return quads
+
+
+
 # r = int(input())
 # c = int(input())
 
-# k = int(input())()
+k = int(input())
 
-nums = [int(n) for n in input().split()]
-
-
+nums = [int(n.strip()) for n in input().split(",")]
 
 # n = [[1,2,3], [4,5,6], [7,8,9]]
 
-print(three_sum_optimal_2pointer(nums))
+print(four_sum_optimal_2pointer(nums,k))
 
 
