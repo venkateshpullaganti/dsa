@@ -29,7 +29,7 @@ def remove_dups(nums):
         i+=1
     return nums
 
-# keep on comparing with nums[i] and if greater then place it at i+1 and incrent i 
+# keep on comparing with nums[i] and if greater then place it at i+1 and increment i 
 def remove_dups_optimized(nums):
     i = 0
     j = 1
@@ -612,6 +612,8 @@ def rotate_matrix_optimal(arr):
 
 def two_sum_brute(nums,target):
     """
+    Given an array of integers nums and an integer target. Return the indices(0 - indexed) of two elements in nums such that they add up to target.
+
     Time Complexity: O(N^2)
     Space Complexity: O(1)
     """
@@ -850,15 +852,98 @@ def four_sum_optimal_2pointer(nums, target):
 
 
 
+#--------------------------- Sort array of 0,1 and 2s ------------------------------
+
+def sort_012s_brute(nums):
+    """
+    Sort the array.
+    Time complexity: O(N logN) : We use merge sort
+    Space complexity: O(N)
+    
+    """
+    nums.sort(key=lambda x:x[0])
+
+    return nums
+
+
+def sort_012s_better(nums):
+    """
+    Count the 0s, 1s and 2s and then populate the array again.
+
+    Time complexity: O(N) + O(N) -> for counting and populating
+    Space complexity: O(1)
+    """
+
+    count0= 0
+    count1= 0
+    count2 = 0
+
+    for num in nums:
+        if num == 0:
+            count0 +=1 
+        elif num == 1:
+            count1 +=1 
+        else:
+            count2 += 1
+
+    i = 0
+    while i <= count0:
+        nums[i] = 0
+        i+=1
+
+    for j in range(count1):
+        nums[i] = 1
+        i+=1
+
+    for j in range(count2):
+        nums[i] = 2
+        i+=1
+
+    return nums
+
+
+
+
+def sort_012s_optimal_dutch_national_flag(nums):
+    """
+    have three pointers, low mid and high
+    
+    assume everything between 0 -> low-1,  low -> mid-1 and hight+1  -> end is sorted. 
+
+    the mid -> high is not sorted. We start with this and keep moving from mid to high
+    sorting everything.
+    
+    Time complexity: O(N) 
+    Space complexity: O(1)
+    """
+
+    low = 0
+    mid = 0
+    high = len(nums)-1
+
+    while mid <= high:
+        if nums[mid] == 0:
+            nums[mid], nums[low] = nums[low], nums[mid]
+            low += 1
+            mid += 1
+        elif nums[mid] == 1:
+            mid +=1 
+        else:
+            nums[mid], nums[high] = nums[high], nums[mid]
+            high -= 1
+    return nums
+    
+
+
 # r = int(input())
 # c = int(input())
 
-k = int(input())
+# k = int(input())
 
 nums = [int(n.strip()) for n in input().split(",")]
 
 # n = [[1,2,3], [4,5,6], [7,8,9]]
 
-print(four_sum_optimal_2pointer(nums,k))
+print(sort_012s_optimal_dutch_national_flag(nums))
 
 
