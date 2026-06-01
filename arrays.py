@@ -932,7 +932,102 @@ def sort_012s_optimal_dutch_national_flag(nums):
             nums[mid], nums[high] = nums[high], nums[mid]
             high -= 1
     return nums
+
+
+
+
+#--------------------------- Maximum sub array elements ------------------------------
+
+def maximum_subarray_brute(nums):
+    """
+    Create all the possible sub arrays and sum them. 
+
+
+    Time Complexity = ~ O(N^3), 3 nested loops (i,j & k). Nearly N^3 because the j & k loops 
+    don't run till len of arr.
+
+    Space Complexity: O(1), no extra space
+    """
+    max = float('-inf')
+
+    for i in range(len(nums)):
+        for j in range(i, len(nums)):
+            s = 0
+            # sub_array=[]
+            for k in range(i,j+1):
+                s = s+nums[k]
+                # sub_array.append(nums[k])
+            # print(sub_array ,  s)
+            if s > max:
+                max = s
+
+    return max
+
+
+def maximum_subarray_better(nums):
+    """
+    Instead of creating all the sub arrays and adding them, we add the elements in
+    the second loop itself with previous sum, avoiding 3rd nested loop.
+
+    Time Complexity: ~O(N^2), for i and jth loops.
+    Space Complexity: O(1), no extra space.
     
+    """
+    max = float('-inf')
+
+    for i in range(len(nums)):
+        if nums[i] > max:
+            max = nums[i]
+        s = 0
+        # sub_arr = []
+        for j in range(i, len(nums)):
+            # sub_arr.append(nums[j])
+            s = s+nums[j]
+            if s > max:
+                max = s
+            # print(sub_arr)
+    return max
+
+
+def maximum_subarray_optimal_kadanes_algo(nums):
+    """
+    for max and sum vars,
+    We will start by adding each num to sum, 
+        we will update sum if sum > max, 
+        we will reset sum to 0, when it goes below 0, so that we will always carry + num
+    
+    Time Complexity: O(N), we are iterating only once
+    Space Complexity: O(1), no extra space
+    
+    """
+
+    max = float('-inf')
+    summ = 0
+
+    arr_start = -1
+    arr_end = -1
+
+    start = 0
+
+    for i in range(len(nums)):
+       
+        if summ == 0:
+            start = i
+            
+        summ += nums[i]
+        
+        if summ > max:
+            max = summ
+            arr_start = start
+            arr_end = i
+        
+        if summ < 0:
+            summ = 0
+
+    sub_arr = [nums[i] for i in range(arr_start, arr_end+1)]
+    print(sub_arr)
+
+    return (max, arr_start, arr_end)
 
 
 # r = int(input())
@@ -940,10 +1035,10 @@ def sort_012s_optimal_dutch_national_flag(nums):
 
 # k = int(input())
 
-nums = [int(n.strip()) for n in input().split(",")]
+nums = [int(n.strip()) for n in input().split(", ")]
 
 # n = [[1,2,3], [4,5,6], [7,8,9]]
 
-print(sort_012s_optimal_dutch_national_flag(nums))
+print(maximum_subarray_optimal_kadanes_algo(nums))
 
 
