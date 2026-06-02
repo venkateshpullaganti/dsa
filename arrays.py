@@ -1030,15 +1030,40 @@ def maximum_subarray_optimal_kadanes_algo(nums):
     return (max, arr_start, arr_end)
 
 
+# -------------------- Next permutation --------------------------
+
+def next_permutation_optimal(nums):
+    pivot_ind = -1
+    l = len(nums)
+
+    for i in range(l-1, -1, -1):
+        if nums[i] > nums[i-1]:
+            pivot_ind = i-1
+            break
+    
+    if pivot_ind == -1:
+        nums.reverse()
+        return nums
+    
+    for i in range(l-1, pivot_ind, -1):
+        if nums[i] > nums[pivot_ind]:
+            nums[i], nums[pivot_ind] = nums[pivot_ind], nums[i]
+            break
+
+    nums[pivot_ind+1:] = reversed(nums[pivot_ind+1:])
+
+    return nums
+    
 # r = int(input())
 # c = int(input())
 
 # k = int(input())
 
-nums = [int(n.strip()) for n in input().split(", ")]
+nums = [int(n.strip()) for n in input().split(",")]
 
 # n = [[1,2,3], [4,5,6], [7,8,9]]
 
-print(maximum_subarray_optimal_kadanes_algo(nums))
+print(next_permutation_optimal(nums))
+
 
 
