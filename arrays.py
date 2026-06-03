@@ -365,6 +365,38 @@ def majority_ele_optimal_moors_voting_algo(nums):
 
     Time complexity: O(n) + O(n)
     Space complexity: O(1)
+
+
+
+
+    FUNCTION majorityElement(nums):
+
+    ── Phase 1: Find Candidate ──────────────────────────
+    candidate ← 0
+    count     ← 0
+
+    FOR each num in nums:
+        IF count == 0:
+            candidate ← num        // reset candidate
+            count     ← 1
+        ELSE IF num == candidate:
+            count ← count + 1      // reinforce candidate
+        ELSE:
+            count ← count - 1      // cancel out one occurrence
+
+    ── Phase 2: Verify Candidate ────────────────────────
+    freq ← 0
+
+    FOR each num in nums:
+        IF num == candidate:
+            freq ← freq + 1
+
+    IF freq > len(nums) / 2:
+        RETURN candidate           // confirmed majority
+
+    RETURN -1                      // no majority element exists
+
+
     """
 
     ele = 0
@@ -387,6 +419,163 @@ def majority_ele_optimal_moors_voting_algo(nums):
         return ele
 
     return -1
+
+
+# ------------------ Majority Element 2 --------------------
+
+def majority_ele_2_brute(nums):
+    """
+    Iterate over each element, count them and add
+
+    Time Complexity: O(N^2)
+    Space Complexity: O(1)
+    
+    """
+    ans = []
+    n = len(nums)
+
+    for i in range(len(nums)):
+        count = 0
+        if len(ans) == 0 or ans[0] != nums[i]:
+            for j in range(len(nums)):
+                if nums[i] == nums[j]:
+                    count+=1
+                
+            if count > n//3:
+               ans.append((nums[i]))
+
+            if len(ans) > 1:
+                break
+
+    return ans
+
+def majority_ele_2_better(nums):
+    """
+    Hash the each elements count.
+    Compare the count > n//3 and return those elements.
+
+    Time complexity: O(N)
+    Space complexity: O(N)
+    
+    """
+    ans = dict()
+
+    n = len(nums)
+
+    for i in range(n):
+        ans[nums[i]] = ans[nums[i]] + 1 if ans.get(nums[i]) else 1
+    
+    eles = []
+    for key,value in ans.items():
+        if value > n//3:
+            eles.append(key)
+    return eles
+
+
+def majority_ele_2_optimal_moors_voting(nums):
+    """
+    Moor voting algo but we take two vars and make sure 
+    they are not same when making initializing each var.
+
+    Time complexity: O(N)
+    Space complexity: O(1) 
+
+    FUNCTION majorityElementTwo(nums):
+
+    ── Phase 1: Find Two Candidates ─────────────────────
+    candidate1 ← None,  count1 ← 0
+    candidate2 ← None,  count2 ← 0
+
+    FOR each num in nums:
+
+        IF count1 == 0 AND num ≠ candidate2:
+            candidate1 ← num          // claim first empty slot
+            count1     ← 1
+
+        ELSE IF count2 == 0 AND num ≠ candidate1:
+            candidate2 ← num          // claim second empty slot
+            count2     ← 1
+
+        ELSE IF num == candidate1:
+            count1 ← count1 + 1       // reinforce candidate1
+
+        ELSE IF num == candidate2:
+            count2 ← count2 + 1       // reinforce candidate2
+
+        ELSE:
+            count1 ← count1 - 1       // cancel one of each
+            count2 ← count2 - 1       //   against this intruder
+
+    ── Phase 2: Verify Both Candidates ──────────────────
+    count1 ← 0
+    count2 ← 0
+
+    FOR each num in nums:
+        IF num == candidate1:  count1 ← count1 + 1
+        IF num == candidate2:  count2 ← count2 + 1
+
+    ── Phase 3: Collect Results ──────────────────────────
+    result ← []
+
+    IF count1 > floor(n / 3):  result.append(candidate1)
+    IF count2 > floor(n / 3):  result.append(candidate2)
+
+    RETURN result
+
+    """
+    count1 = 0
+    ele1 = None
+
+    count2 = 0
+    ele2 = None
+
+    n = len(nums)
+
+    for i in range(n):
+        if count1 == 0 and nums[i] != ele2:
+            count1 = 1
+            ele1 = nums[i]
+        elif count2 == 0 and nums[i] != ele1:
+            count2 = 1
+            ele2 = nums[i]
+        elif ele1 == nums[i]:
+            count1+=1
+        elif ele2 == nums[i]:
+            count2+=1
+        else:
+            count1 -= 1
+            count2 -= 1
+    
+
+    count1 = 0
+    count2 = 0
+    for i in range(n):
+        if nums[i] == ele1:
+            count1+=1
+        elif nums[i] == ele2:
+            count2+=1 
+    
+    ans = []
+    if count1 > n//3:
+        ans.append(ele1)
+    
+    if count2 > n//3:
+        ans.append(ele2)
+    
+    return ans
+
+# r = int(input())
+# c = int(input())
+
+# k = int(input())
+
+nums = [int(n.strip()) for n in input().split(", ")]
+
+# n = [[1,2,3], [4,5,6], [7,8,9]]
+
+print(majority_ele_2_better(nums))
+
+
 
 
 
@@ -1054,16 +1243,4 @@ def next_permutation_optimal(nums):
 
     return nums
     
-# r = int(input())
-# c = int(input())
-
-# k = int(input())
-
-nums = [int(n.strip()) for n in input().split(",")]
-
-# n = [[1,2,3], [4,5,6], [7,8,9]]
-
-print(next_permutation_optimal(nums))
-
-
 
