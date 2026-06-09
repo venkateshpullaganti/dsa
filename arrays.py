@@ -564,20 +564,6 @@ def majority_ele_2_optimal_moors_voting(nums):
     
     return ans
 
-# r = int(input())
-# c = int(input())
-
-# k = int(input())
-
-nums = [int(n.strip()) for n in input().split(", ")]
-
-# n = [[1,2,3], [4,5,6], [7,8,9]]
-
-print(majority_ele_2_better(nums))
-
-
-
-
 
 # Leaders in the array
 
@@ -1243,4 +1229,109 @@ def next_permutation_optimal(nums):
 
     return nums
     
+
+# ------------------ Repeating and missing number ---------------------
+
+def repeating_and_missing_num_brute(nums):
+    """
+    Nested loop to count the nums and break when you got the both nums
+
+    Time Complexity: O(N^2), nested loops
+    Space Complexity: O(1), No extra space
+    
+    """
+    repeating_num = -1
+    missing_num = -1
+
+    for i in range(1, len(nums)+1):
+        count = 0
+        for j in range(len(nums)):
+            if i == nums[j]:
+                count+=1
+            if count > 1:
+                repeating_num = i
+                break
+        if count == 0:
+            missing_num = i
+        
+        if repeating_num != -1 and missing_num != -1:
+            break
+    
+    return [repeating_num, missing_num]
+
+
+def repeating_and_missing_num_better_hashing(nums):
+    n = len(nums)
+    num_hash = [0 for i in range(n+1)]
+
+    for i in range(len(nums)):
+        num_hash[nums[i]] += 1
+    
+    ans = [-1,-1]
+
+    for i in range(n+1):
+        if num_hash[i] > 1:
+            ans[0] = i
+        elif num_hash[i] == 0:
+            ans[1] = i
+
+    return ans 
+
+def repeating_and_missing_num_optimal(nums):
+    """
+    Using equations:
+    (sum of elements) - (sum of first n natural nums) -> x - y = v1
+    (sum of squares of elements) - (sum of squares of n natural nums) -> x^2 - y^2 = v2
+
+    x^2 - y^2 = v2 -> (x+y) (x-y) = v2
+
+    x-y = v1
+    (x+y) (x-y) = v2
+
+    (x+y) = v2/(x-y)
+
+    x+y = v2/v1
+    x-y = v1
+
+    Time Complexity: O(N), for sum & pow
+    Space complexity: O(1), no extra
+    
+    """
+    n = len(nums)
+
+    sN = (n*(n+1))//2
+    s2N =( (n*(n+1)) * (2*n+1))//6
+
+    s = 0
+    s2 = 0
+
+    for num in nums:
+        s += num
+        s2 += num * num
+    
+    # x-y = v1
+    x_sub_y = s - sN 
+
+    # x^2 - y^2 = v2
+    pow_diff = s2 - s2N
+    x_add_y = pow_diff//x_sub_y  # x+y
+
+    x =(x_add_y+x_sub_y)//2
+
+    y = x_add_y-x
+
+    return [x,y]
+
+
+
+# r = int(input())
+# c = int(input())
+
+# k = int(input())
+
+nums = [int(n.strip()) for n in input().split(", ")]
+
+# n = [[1,2,3], [4,5,6], [7,8,9]]
+
+print(repeating_and_missing_num_optimal(nums))
 
