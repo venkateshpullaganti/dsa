@@ -1323,15 +1323,79 @@ def repeating_and_missing_num_optimal(nums):
     return [x,y]
 
 
+# --------------------- Count Inversions ----------------------------------------
+
+def count_inversions_brute(nums):
+    """
+    Iterate nums and check with the elements that are left to it. 
+
+    Time : O(N^2) , nested loops
+    Space: O(1)
+    
+    """
+    count = 0
+    n = len(nums)
+    for i in range(n):
+        for j in range(i+1, n):
+            if nums[i] > nums[j]:
+                count+=1
+
+    return count
+
+
+
+def merge_and_count(nums, low, mid, high):
+    left = low
+    right = mid+1
+
+    temp = []
+    count = 0
+
+    while left <= mid and right <= high:
+        if nums[left] <= nums[right]:
+            temp.append(nums[left])
+            left+=1
+        else:
+            temp.append(nums[right])
+            count += mid-left+1
+            right+=1
+
+    while left <= mid:
+        temp.append(nums[left])
+        left+=1
+    
+    while right <= high:
+        temp.append(nums[right])
+        right+=1
+    
+    for i in range(low, high+1):
+        nums[i] = temp[i-low]
+    
+    return count
+
+
+def count_inversions_optimal_merge_sort(nums,low, high):
+    count = 0
+    if low < high:
+        mid = (low+high)//2
+
+        count+= count_inversions_optimal_merge_sort(nums, low, mid)
+        count+= count_inversions_optimal_merge_sort(nums, mid+1, high)
+        count+= merge_and_count(nums, low, mid, high)
+
+        return count
+    return count
+
 
 # r = int(input())
 # c = int(input())
 
 # k = int(input())
 
-nums = [int(n.strip()) for n in input().split(", ")]
+nums = [int(n.strip()) for n in input().split(",")]
 
 # n = [[1,2,3], [4,5,6], [7,8,9]]
 
-print(repeating_and_missing_num_optimal(nums))
+n = len(nums)
+print(count_inversions_optimal_merge_sort(nums, 0, n-1))
 
