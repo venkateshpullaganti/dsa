@@ -1117,7 +1117,6 @@ def maximum_subarray_brute(nums):
     """
     Create all the possible sub arrays and sum them. 
 
-
     Time Complexity = ~ O(N^3), 3 nested loops (i,j & k). Nearly N^3 because the j & k loops 
     don't run till len of arr.
 
@@ -1344,12 +1343,11 @@ def count_inversions_brute(nums):
 
 
 
-def merge_and_count(nums, low, mid, high):
+def merge_and_count_reverse_pairs(nums, low, mid, high, count):
     left = low
     right = mid+1
 
     temp = []
-    count = 0
 
     while left <= mid and right <= high:
         if nums[left] <= nums[right]:
@@ -1381,10 +1379,159 @@ def count_inversions_optimal_merge_sort(nums,low, high):
 
         count+= count_inversions_optimal_merge_sort(nums, low, mid)
         count+= count_inversions_optimal_merge_sort(nums, mid+1, high)
-        count+= merge_and_count(nums, low, mid, high)
+        count+= merge_and_count_reverse_pairs(nums, low, mid, high)
 
         return count
     return count
+
+
+# ------------------------------Reverse Pairs :  Count of pairs 2x -------------------------
+"""
+Find the pairs in the arr such that a[i] > 2 * a[j] and i < j.
+
+"""
+
+def reverse_pairs_2x_brute(nums):
+    """
+        Iterate over the nums and find the pairs and count them.
+        Time : O(N^2)
+        Space: O(1)
+    """
+
+    count = 0
+    n = len(nums)
+    if n < 2:
+        return count
+
+    for i in range(n):
+        for j in range(i+1, n):
+            if nums[i] > 2 * nums[j]:
+                count+=1 
+    return count
+
+
+
+def merge_sort_arr_reverse_pairs(nums, low, mid, high):
+    right = mid+1
+    left = low
+    temp = []
+
+    while left <= mid and right <=high:
+        if nums[left] <= nums[right]:
+            temp.append(nums[left])
+            left+=1
+        else:
+            temp.append(nums[right])
+            right+=1
+    
+    while left <= mid:
+        temp.append(nums[left])
+        left+=1
+
+    while right <= high:
+        temp.append(nums[right])
+        right+=1
+    
+    
+    for i in range(low, high+1):
+        nums[i] = temp[i-low]
+    
+    return nums
+
+def count_pairs_2x(nums, low, mid, high):
+    count = 0
+
+    right = mid+1
+
+    for i in range(low, mid+1):
+        while right <= high and nums[i] > 2 * nums[right]:
+            right+=1
+        count += right - (mid+1)
+    print(f"Final iteration count {nums[low]} -> {nums[high]} : {count}")
+    return count
+
+
+def merge_and_count_reverse_pairs(nums, low, high):
+
+    count = 0
+    if low >= high:
+        return count
+    
+    mid = (low+high)//2
+
+    count += merge_and_count_reverse_pairs(nums, low, mid)
+    count += merge_and_count_reverse_pairs(nums, mid+1, high)
+    count += count_pairs_2x(nums, low, mid, high)
+    merge_sort_arr_reverse_pairs(nums, low, mid, high)
+
+    return count
+
+
+def reverse_pairs_2x_optimal_merge_sort(nums):
+    n = len(nums)
+    return merge_and_count_reverse_pairs(nums, 0, n-1)
+
+
+
+
+# ----------------------- Max Product subArray ------------------
+
+def max_product_brute(nums):
+    """
+    Find all the sub arrays and product of those and compare.
+    Return the max.
+
+    Time : ~O(N^3), 3 nested loops
+    Space : O(1)
+
+    """
+    n= len(nums)
+    max_product = float('-inf')
+
+    for i in range(0, n):
+        for j in range(i, n):
+            product = 1
+            for k in range(i, j+1):
+                product = product * nums[k]
+            if product > max_product:
+                max_product = product
+    return max_product       
+
+
+def max_product_better(nums):
+    """
+    We dont create the sub arrays, the sub array element we get from i -> j loop.
+    Ex: [4,0,2,3,0]
+        i     j  prod
+        0 -> 0 : 4
+        0 -> 1 : 4 * 0
+        0 -> 2 : 4 * 0 * 2
+        0 -> 3 :  4 * 0 * 2 *  3
+        0 -> 4 : 4 * 0 * 2 * 3 * 0
+
+        similarly with i = 1, 2, 3, 4
+
+    Time:  O(N^2)
+    Space: O(1)
+    """
+    n = len(nums)
+    max_product = float("-inf")
+    
+    for i in range(0,n):
+        product = 1
+        if nums[i] > max_product:
+            max_product = nums[i]
+
+        for j in range(i, n):
+            product = product * nums[j]
+            if product > max_product:
+                max_product = product
+                # sub array is i -> j
+    
+    return max_product
+
+def max_product_optimal(nums):
+    pass
 
 
 # r = int(input())
@@ -1397,5 +1544,8 @@ nums = [int(n.strip()) for n in input().split(",")]
 # n = [[1,2,3], [4,5,6], [7,8,9]]
 
 n = len(nums)
-print(count_inversions_optimal_merge_sort(nums, 0, n-1))
+print(max_product_better(nums))
+
+
+
 
