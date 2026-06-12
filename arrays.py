@@ -1531,7 +1531,61 @@ def max_product_better(nums):
     return max_product
 
 def max_product_optimal(nums):
+    """
+    We iterate arr from start -> end and end -> start, we calculate 
+    the prefix and suffix and when these becomes 0, we reset to 1 and start fresh.
+
+    Time: O(N), iterate only once
+    Space: O(1), no extra space
+    """
+    n = len(nums)
+    pre = 1
+    suf = 1
+    max = float('-inf')
+    s_start = -1
+    s_end = -1
+
+    pre_start = 0
+    suf_end = n-1
+
+    for i in range(n):
+        if pre == 0 :
+            pre = 1
+            pre_start = i
+        if suf == 0:
+            suf = 1
+            suf_end = n-i-1
+
+        pre = pre * nums[i]
+        suf = suf * nums[n-i-1]
+
+        if pre > max:
+            max = pre
+            s_start = pre_start
+            s_end = i
+
+        if suf > max: 
+            max = suf
+            s_start = n-i-1
+            s_end = suf_end
+
+    print(s_start, s_end)
+    return max
+
+
+# ------------------ Merge 2 sorted arrays into 1 without extra space -------------------
+
+
+def merge_2_sorted_arr(nums1, nums2):
+    i = 0
+    j = 0
+    while i < len(nums1) and j < len(nums2):
+        if nums1[i] <= nums2[j]:
+            i += 1
     pass
+
+
+
 
 
 # r = int(input())
@@ -1539,12 +1593,12 @@ def max_product_optimal(nums):
 
 # k = int(input())
 
-nums = [int(n.strip()) for n in input().split(",")]
+nums = [int(n.strip()) for n in input().split(", ")]
 
 # n = [[1,2,3], [4,5,6], [7,8,9]]
 
 n = len(nums)
-print(max_product_better(nums))
+print(max_product_optimal(nums))
 
 
 
