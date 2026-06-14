@@ -1576,15 +1576,81 @@ def max_product_optimal(nums):
 # ------------------ Merge 2 sorted arrays into 1 without extra space -------------------
 
 
-def merge_2_sorted_arr(nums1, nums2):
-    i = 0
+def merge_2_sorted_arr(nums1, m, nums2, n):
+    i = m-1
     j = 0
-    while i < len(nums1) and j < len(nums2):
-        if nums1[i] <= nums2[j]:
-            i += 1
-    pass
 
+    while i >= 0 and j < n:
+        if nums1[i] > nums2[j]:
+            nums1[i], nums2[j] = nums2[j], nums1[i]
+            i-=1
+            j+=1
+        else:
+            break
+    
+    nums1[:m] = sorted(nums1[:m])
+    nums2.sort()
 
+    for i in range(m, m+n):
+        nums1[i] = nums2[i-m]
+    return nums1
+
+def merge_2_sorted_arr_shell_sorting(nums1, m, nums2, n):
+
+    def swap_if_greater(a1, a2, i, j):
+        print(a1, i)
+        print(a2, j)
+        if a1[i] > a2[j]:
+            a1[i], a2[j] = a2[j], a1[i]
+
+    l = m+n
+    gap = l//2 + l%2
+
+    while gap > 0:
+        left = 0
+        right  = left + gap
+        while right < l:
+                # nums1 and nums2
+            if left < m and right >= m:
+                swap_if_greater(nums1, nums2, left, right-m)
+            # nums1 and nums1
+            elif left < m and right < m:
+                swap_if_greater(nums1, nums1, left, right)
+            # nums2 and nums2
+            elif left >= m:
+                swap_if_greater(nums2, nums2, left-m, right-m)
+        
+            left += 1
+            right += 1
+        if gap == 1:
+            break
+        gap = gap//2 + gap%2
+
+    nums1[m:] = nums2
+
+# *****
+def merge_2_sorted_arrays_optimally_goat(nums1,m, nums2, n):
+    """
+    As both of them are sorted arrays, we traverse with two pointers from the last
+    we place the largest element from back of the arr in the nums1
+    """
+    i = m-1
+    j = n-1
+    last = m + n - 1
+    # nums1.extend(nums2) : Assuming that nums1 is already m+n len
+
+    while j >= 0:
+        print(i,j, last)
+        if i>=0 and  nums1[i] >= nums2[j]:
+            nums1[last] = nums1[i]
+            i -= 1
+            last-=1
+        else:
+            nums1[last] = nums2[j]
+            j -= 1
+            last -= 1
+    
+    return nums1
 
 
 
@@ -1594,11 +1660,13 @@ def merge_2_sorted_arr(nums1, nums2):
 # k = int(input())
 
 nums = [int(n.strip()) for n in input().split(", ")]
+nums2 = [int(n.strip()) for n in input().split(", ")]
+
 
 # n = [[1,2,3], [4,5,6], [7,8,9]]
 
 n = len(nums)
-print(max_product_optimal(nums))
+print(merge_2_sorted_arrays_optimally_goat(nums,len(nums), nums2, len(nums2)))
 
 
 
