@@ -98,5 +98,53 @@ def longest_conseq_optimal(nums):
     return max_len
 
 
+def longest_sub_array_with_sum_k_brute1(nums, k):
+    """
+    Generate all the sub arrays and count the sum, when the count == k and len > current max, save in max.
+    Time Complexity: O(N^3)
+    Space Complexity: O(1)
+    """
+
+    if not nums:
+        return 0
+    
+    max_len = 0
+
+    num_len = len(nums)
+    for i in range(num_len):
+        for j in range(i, num_len):
+            sum = 0
+            for l in range(i, j+1):
+                sum+= nums[l]
+            if sum == k and j - i+1 > max_len:
+                max_len = j-i+1
+    
+    return max_len
+
+def longest_sub_array_with_sum_k_brute_2(nums, k):
+    """
+    Generate all the sub arrays and count the sum, when the count == k and len > current max, save in max.
+    Time Complexity: O(N^3)
+    Space Complexity: O(1)
+    """
+
+    if not nums:
+        return 0
+    
+    max_len = 0
+
+    num_len = len(nums)
+    for i in range(num_len):
+        sum = 0
+        for j in range(i, num_len):
+            sum += nums[j]
+        if sum == k and j-i+1 > max_len:
+            max_len = j-i+1
+
+    return max_len
+
+
+
 nums = [int(n.strip()) for n in input().split(",")]
-print(longest_conseq_optimal(nums))
+k = int(input().strip())
+print(longest_sub_array_with_sum_k_brute_2(nums,k))
