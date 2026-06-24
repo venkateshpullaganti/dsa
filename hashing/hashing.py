@@ -32,7 +32,6 @@ def longest_consq_seq_brute(nums):
     return max_len
 
 
-
 def longest_conseq_better(nums):
     """
     Sort the array, keep a counter and last_ele in the sequence,
@@ -138,13 +137,88 @@ def longest_sub_array_with_sum_k_brute_2(nums, k):
         sum = 0
         for j in range(i, num_len):
             sum += nums[j]
-        if sum == k and j-i+1 > max_len:
-            max_len = j-i+1
+            if sum == k and j-i+1 > max_len:
+                max_len = j-i+1
 
     return max_len
 
+def longest_sub_array_with_sum_k_better_pos_negs(nums,k):
+    """
+    Iterate over each element and save the sum in hash map, now
+    for the sub array to exists, we need sum-k before so that from that 
+    sum we get the sub array.
+
+    Complexity: 
+        Time: O(N) *  O(1) / O(N) for worst case if collisions happen.
+            For ordered/sorted dict, it it will be O(N logN)
+        Space:
+            O(N) for saving the sums.
+    """
+    
+    if not nums:
+        return 0
+    
+    sums = dict()
+
+    longest = 0
+    current_sum = 0
+
+    for i in range(len(nums)):
+        
+        current_sum += nums[i]
+
+        if sums.get(current_sum,-1) == -1:
+            sums[current_sum] = i
+
+        diff = current_sum - k
+
+        if current_sum == k and i+1 > longest:
+            longest = i+1
+        elif sums.get(diff, -1) != -1 :
+            current_len = i - sums.get(diff)
+            if current_len > longest:
+                longest = current_len
+        
+    return longest
+
+def longest_sub_array_with_sum_k_optimal(nums, k):
+    """
+    We take 2 pointers, left and right, we start iterating the elements and adding 
+    to sum, when the sum is greater than k, then we start left pointer to increase 
+    to check and reducing those nums from sum. The elements sum when equal to k, right-left is the len. 
+    save the len and continue till the end.
+
+    Complexity:
+
+    Time: O(N), as there are two pointers traversing the arr only once. 
+    Space: O(1), no extra space used.
+    """
+    if not nums:
+        return 0
+
+    right = 0
+    left = 0
+    s = nums[right]
+    longest = 0
+
+    while right < len(nums):
+
+        while left < right and sum > k:
+            s -= nums[left]
+            left += 1
+        
+        if s == k and  right-left > longest:
+            longest = right-left
+
+        right += 1
+        if right < len(nums):
+            s+=nums[right]
+            
+    return longest
 
 
 nums = [int(n.strip()) for n in input().split(",")]
 k = int(input().strip())
-print(longest_sub_array_with_sum_k_brute_2(nums,k))
+print(longest_sub_array_with_sum_k_better_pos_negs(nums,k))
+
+
