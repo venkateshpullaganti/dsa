@@ -142,7 +142,7 @@ def longest_sub_array_with_sum_k_brute_2(nums, k):
 
     return max_len
 
-def longest_sub_array_with_sum_k_better_pos_negs(nums,k):
+def longest_sub_array_with_sum_k_better_pos_negs_prefix_sum(nums,k):
     """
     Iterate over each element and save the sum in hash map, now
     for the sub array to exists, we need sum-k before so that from that 
@@ -181,7 +181,7 @@ def longest_sub_array_with_sum_k_better_pos_negs(nums,k):
         
     return longest
 
-def longest_sub_array_with_sum_k_optimal(nums, k):
+def longest_sub_array_with_sum_k_optimal_2_pointer(nums, k):
     """
     We take 2 pointers, left and right, we start iterating the elements and adding 
     to sum, when the sum is greater than k, then we start left pointer to increase 
@@ -203,7 +203,7 @@ def longest_sub_array_with_sum_k_optimal(nums, k):
 
     while right < len(nums):
 
-        while left < right and sum > k:
+        while left < right and s > k:
             s -= nums[left]
             left += 1
         
@@ -217,8 +217,83 @@ def longest_sub_array_with_sum_k_optimal(nums, k):
     return longest
 
 
+def count_subarrays_with_given_sum_brute(nums, k):
+    """
+    Find all the sub arrays and sum and count them
+
+    Time: O(N^3), 3 nested loops
+    Space: O(1)
+    """
+
+    if not nums:
+        return 0
+
+    subs = 0
+
+    num_len = len(nums)
+
+    for i in range(num_len):
+        for j in range(i, num_len):
+            s = 0
+            for l in range(i, j+1):
+                s = s+nums[l]
+            
+            if s == k:
+                subs += 1
+    return subs
+
+
+def count_subarrays_with_given_sum_better(nums, k):
+    """
+    Instead of the 3rd nested loop, we directly sum and compare in second loop itself.
+
+    Time: O(N^2), 2 nested loops
+    Space: O(1)
+    """
+
+    if not nums:
+        return 0
+
+    subs = 0
+
+    num_len = len(nums)
+
+    for i in range(num_len):
+        s = 0
+        for j in range(i, num_len):
+            s+= nums[j]
+            if s == k:
+                subs += 1
+    return subs
+
+
+def count_subarrays_with_given_sum_optimal_prefix_sum(nums, k):
+    """
+    Store the counts and
+    
+
+    """
+
+    if not nums:
+        return 0
+    
+    sums= {0:1}
+    count = 0
+    current_sum = 0
+    
+    for i in range(len(nums)):
+        current_sum += nums[i]
+        
+        diff = current_sum - k
+
+        count += sums.get(diff,0)
+
+        sums[current_sum] = sums.get(current_sum, 0) + 1
+
+    return count
+
 nums = [int(n.strip()) for n in input().split(",")]
 k = int(input().strip())
-print(longest_sub_array_with_sum_k_better_pos_negs(nums,k))
+print(count_subarrays_with_given_sum_optimal_prefix_sum(nums,k))
 
 
