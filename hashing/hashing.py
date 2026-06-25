@@ -292,8 +292,32 @@ def count_subarrays_with_given_sum_optimal_prefix_sum(nums, k):
 
     return count
 
+
+def count_subarrays_with_given_xor_optimal(nums, k):
+    """
+    The idea is to find the x where x = current_xor ^ k,
+    because x ^ k = current_xor, in order for k to exists there
+    must be an element current_xor ^ k somewhere till current idx.
+
+    Time: O(N), iterating only once.
+    Space: O(N), for saving xors
+    """
+    xors = {0:1}
+    sub_array_xors = 0
+
+    current_xor = 0
+    for i in range(len(nums)):
+        current_xor = current_xor ^ nums[i]
+
+        search_xor = current_xor ^ k
+        sub_array_xors += xors.get(search_xor, 0)
+
+        xors[current_xor] = xors.get(current_xor,0) + 1
+        
+    return sub_array_xors
+
 nums = [int(n.strip()) for n in input().split(",")]
 k = int(input().strip())
-print(count_subarrays_with_given_sum_optimal_prefix_sum(nums,k))
+print(count_subarrays_with_given_xor_optimal(nums,k))
 
 
