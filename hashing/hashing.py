@@ -269,9 +269,6 @@ def count_subarrays_with_given_sum_better(nums, k):
 
 def count_subarrays_with_given_sum_optimal_prefix_sum(nums, k):
     """
-    Store the counts and
-    
-
     """
 
     if not nums:
