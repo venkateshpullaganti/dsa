@@ -32,4 +32,9 @@ nums = [int(n.strip()) for n in input().split(",")]
 k = int(input())
 l = len(nums)
 
+
+nums = [int(n.strip()) for n in input().split(",")]
+k = int(input())
+l = len(nums)
+
 print(binary_search_recursion(nums, k, 0, l-1))
