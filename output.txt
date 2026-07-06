@@ -1,1 +1,1 @@
-The floor and ceil are: 4 7
+The index is: 3
