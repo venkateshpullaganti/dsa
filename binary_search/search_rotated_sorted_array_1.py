@@ -7,19 +7,30 @@ class Solution:
         n = len(nums)
         high = n-1
 
+       # Applying binary search algorithm
         while low <= high:
             mid = (low+high)//2 
+
+             # Check if mid points to the target
             if nums[mid] == k:
                 return mid 
+            
+            # Check if the left part is sorted
             if nums[low] <= nums[mid]:
+
+                # Target exists in the left sorted part
                 if nums[low] <= k <= nums[mid]:
                     high = mid-1
                 else:
+                # Target does not exist in the left sorted part
                     low = mid + 1
             else:
+                # Check if the right part is sorted
                 if nums[mid] <= k <= nums[high]:
+                    # Target exists in the right sorted part
                     low = mid + 1
                 else:
+                    # Target does not exist in the right sorted part
                     high = mid - 1
         return -1
         
