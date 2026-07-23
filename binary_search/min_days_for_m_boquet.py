@@ -135,3 +135,13 @@ if __name__ == "__main__":
         print("We cannot make m bouquets.") 
     else:
         print(f"We can make bouquets on day {ans}") 
+
+
+"""
+Complexity Analysis: 
+Time Complexity:O(log(max-min+1) * N), where max is the maximum element of the array, min is the minimum element of the array, N is size of the array.
+As binary search is being applied on answers that are in the range of [min, max]. For every possible answer ‘mid’, the possible() function is being called. Inside the possible() function, traversing the entire array, which results in O(N).
+
+Space Complexity: As no additional space is used, so the Space Complexity is O(1).
+
+"""
